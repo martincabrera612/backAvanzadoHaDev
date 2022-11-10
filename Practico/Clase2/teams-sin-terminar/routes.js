@@ -2,7 +2,7 @@ const express = require("express");
 const handler = require("./teamController");
 
 const router = express.Router();
-
+router.get("/", (req,res) => res.redirect ("http://localhost:3000/teams"));
 router.get("/teams", handler.getAllTeams);
 router.get("/teams/:id", handler.getOneTeam);
 router.post("/teams", handler.createOneTeam);

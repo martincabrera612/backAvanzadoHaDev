@@ -11,7 +11,7 @@ const getOneTeam = (req, res) => {
   if (team) {
     return res.send(team);
   } else {
-    return res.status(404).send("OK");
+    return res.status(404).send("No existe ese equipo");
   }
 };
 
@@ -20,7 +20,9 @@ const createOneTeam = (req, res) => {
   // Que pasa si ya existe el team que queremos crear? (buscar sobre el status code 409)
  console.log ("Este es el body:" , req.body);
   const newTeam = req.body;
+
   const currentTeam = db.teams[newTeam.id];
+  //Me fijo si ese Team ya existe
   if (currentTeam) {
     res.status (409).send ({
       error:"El team con la id " + newTeam.id + " ya existe",
@@ -41,6 +43,7 @@ const deleteOneTeam = (req, res) => {
 
   if (team) {
     delete db.teams[teamId];
+    res.send("Se borro exitosamente el equipo: " + teamId);
     
   }else {
     res.status(404).send ({error: "Team no encontrado"});
@@ -51,7 +54,21 @@ const deleteOneTeam = (req, res) => {
 const updateOneTeam = (req, res) => {
   // Tenemos que actualizar un team usando la id que llega en el req.params y los datos que llegan en el req.body!
   // Que pasa si no existe el team que queremos actualizar?
-  res.send("PATCH");
+
+  const teamId = req.params.id;
+  const newData = req.body;
+  const currentTeam = db.teams[teamId];
+  if (!currentTeam) {
+    res.status(404).send({error: "Ese team no existe"});
+  }else {
+
+  db.teams[teamId].id =newData.id;
+  db.teams[teamId].name =newData.name;
+  db.teams[teamId].flag = newData.flag;
+  res.send(db.teams[teamId]);
+  }
+  
+  
 };
 
 module.exports = {
