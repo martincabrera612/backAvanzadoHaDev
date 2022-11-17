@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/clase03");
+mongoose.connect("mongodb://localhost/clase03"); //Si no existe esa base de datos mongoose la crea
 
 
 
